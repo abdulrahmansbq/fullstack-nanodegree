@@ -158,6 +158,18 @@ var inputValidator = function (req, res, next) {
   if (reqData.height === undefined) {
     next("Height is missing");
   }
+  if (isNaN(reqData.width)) {
+    next("Width must be a number");
+  }
+  if (isNaN(reqData.height)) {
+    next("Height must be a number");
+  }
+  if (parseInt(reqData.width) <= 0) {
+    next("Width must be > 0");
+  }
+  if (parseInt(reqData.height) <= 0) {
+    next("Height must be > 0");
+  }
   next();
 };
 exports.inputValidator = inputValidator;

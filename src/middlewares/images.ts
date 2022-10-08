@@ -19,6 +19,18 @@ const inputValidator = (req: express.Request, res: express.Response, next: expre
   if(reqData.height === undefined){
     next("Height is missing");
   }
+  if(isNaN(<number>(<unknown>reqData.width))){
+    next("Width must be a number");
+  }
+  if(isNaN(<number>(<unknown>reqData.height))){
+    next("Height must be a number");
+  }
+  if(parseInt(<string>reqData.width) <= 0){
+    next("Width must be > 0");
+  }
+  if(parseInt(<string>reqData.height) <= 0){
+    next("Height must be > 0");
+  }
   next();
 }
 
