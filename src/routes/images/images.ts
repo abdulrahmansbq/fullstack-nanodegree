@@ -12,13 +12,17 @@ images.get('/', [inputValidator, imageCaching], async (req: express.Request, res
     height: parseInt(<string>req.query.height)
   }
 
-  res.writeHead(200, {
-    "Content-Type": "image/jpeg"
-  });
+  await imageResizer(data)
+    .then(async (newImagePath) => {
 
-  const newImagePath: string = await imageResizer(data);
-  const newImage = await fs.readFile(newImagePath);
-  res.end(newImage);
+      res.writeHead(200, {
+        "Content-Type": "image/jpeg"
+      });
+      const newImage = await fs.readFile(newImagePath);
+      res.end(newImage);
+
+    })
+    .catch(() => { res.end("Error: the image is not found")});
 
 });
 
