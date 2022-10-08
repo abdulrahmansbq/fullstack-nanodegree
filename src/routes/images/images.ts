@@ -13,7 +13,7 @@ images.get('/', [inputValidator, imageCaching], async (req: express.Request, res
   }
 
   await imageResizer(data)
-    .then(async (newImagePath) => {
+    .then(async (newImagePath: string) => {
 
       res.writeHead(200, {
         "Content-Type": "image/jpeg"

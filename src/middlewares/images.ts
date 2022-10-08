@@ -32,7 +32,7 @@ const imageCaching = async (req: express.Request, res: express.Response, next: e
   const reqData = req.query;
   const imagePath = `assets/thumb/${reqData.filename}_thumb.jpg`;
   await fs.readFile(imagePath)
-    .then(async (file) => {
+    .then(async (file: Buffer) => {
       const metadata = await sharp(file).metadata()
        if(metadata.height == reqData.height && metadata.width == reqData.width)
          res.end(file);
