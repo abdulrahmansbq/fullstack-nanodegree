@@ -21,17 +21,9 @@ npm run prettier
 ```
 
 ```bash
-npm run ts-prettier
-```
-
-
-```bash
 npm run lint
 ```
 
-```bash
-npm run ts-lint
-```
 
 ## Endpoints:
 
