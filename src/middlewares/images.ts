@@ -1,6 +1,5 @@
 import express from "express";
 import { promises as fs } from "fs";
-import sharp from "sharp";
 
 /**
  * This middleware is concerned with validating the inputs and checking their presences.
@@ -8,31 +7,40 @@ import sharp from "sharp";
  * @param res
  * @param next
  */
-const inputValidator = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+const inputValidator = (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
   const reqData = req.query;
-  if(reqData.filename === undefined){
+  fs.readdir("assets/full").then((files) => {
+    if (!files.includes(<string>reqData.filename + ".jpg")) {
+      next("Image does not exists");
+    }
+  });
+  if (reqData.filename === undefined) {
     next("File name is missing");
   }
-  if(reqData.width === undefined){
+  if (reqData.width === undefined) {
     next("Width is missing");
   }
-  if(reqData.height === undefined){
+  if (reqData.height === undefined) {
     next("Height is missing");
   }
-  if(isNaN(<number>(<unknown>reqData.width))){
+  if (isNaN(<number>(<unknown>reqData.width))) {
     next("Width must be a number");
   }
-  if(isNaN(<number>(<unknown>reqData.height))){
+  if (isNaN(<number>(<unknown>reqData.height))) {
     next("Height must be a number");
   }
-  if(parseInt(<string>reqData.width) <= 0){
+  if (parseInt(<string>reqData.width) <= 0) {
     next("Width must be > 0");
   }
-  if(parseInt(<string>reqData.height) <= 0){
+  if (parseInt(<string>reqData.height) <= 0) {
     next("Height must be > 0");
   }
   next();
-}
+};
 
 /**
  * This middleware is concerned with checking if the image is already processed or not.
@@ -40,22 +48,21 @@ const inputValidator = (req: express.Request, res: express.Response, next: expre
  * @param res
  * @param next
  */
-const imageCaching = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+const imageCaching = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
   const reqData = req.query;
-  const imagePath = `assets/thumb/${reqData.filename}_thumb.jpg`;
-  await fs.readFile(imagePath)
+  const imagePath = `assets/thumb/${reqData.filename}_${reqData.width}_${reqData.height}.jpg`;
+  await fs
+    .readFile(imagePath)
     .then(async (file: Buffer) => {
-      const metadata = await sharp(file).metadata()
-       if(metadata.height == reqData.height && metadata.width == reqData.width)
-         res.end(file);
-       else
-         next();
-    }).catch(() => {
+      res.end(file);
+    })
+    .catch(() => {
       next();
     });
-}
-
-export {
-  imageCaching,
-  inputValidator
 };
+
+export { imageCaching, inputValidator };

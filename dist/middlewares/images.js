@@ -132,15 +132,9 @@ var __generator =
       return { value: op[0] ? op[1] : void 0, done: true };
     }
   };
-var __importDefault =
-  (this && this.__importDefault) ||
-  function (mod) {
-    return mod && mod.__esModule ? mod : { default: mod };
-  };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.inputValidator = exports.imageCaching = void 0;
 var fs_1 = require("fs");
-var sharp_1 = __importDefault(require("sharp"));
 /**
  * This middleware is concerned with validating the inputs and checking their presences.
  * @param req
@@ -149,6 +143,11 @@ var sharp_1 = __importDefault(require("sharp"));
  */
 var inputValidator = function (req, res, next) {
   var reqData = req.query;
+  fs_1.promises.readdir("assets/full").then(function (files) {
+    if (!files.includes(reqData.filename + ".jpg")) {
+      next("Image does not exists");
+    }
+  });
   if (reqData.filename === undefined) {
     next("File name is missing");
   }
@@ -186,31 +185,19 @@ var imageCaching = function (req, res, next) {
       switch (_a.label) {
         case 0:
           reqData = req.query;
-          imagePath = "assets/thumb/".concat(reqData.filename, "_thumb.jpg");
+          imagePath = "assets/thumb/"
+            .concat(reqData.filename, "_")
+            .concat(reqData.width, "_")
+            .concat(reqData.height, ".jpg");
           return [
             4 /*yield*/,
             fs_1.promises
               .readFile(imagePath)
               .then(function (file) {
                 return __awaiter(void 0, void 0, void 0, function () {
-                  var metadata;
                   return __generator(this, function (_a) {
-                    switch (_a.label) {
-                      case 0:
-                        return [
-                          4 /*yield*/,
-                          (0, sharp_1.default)(file).metadata(),
-                        ];
-                      case 1:
-                        metadata = _a.sent();
-                        if (
-                          metadata.height == reqData.height &&
-                          metadata.width == reqData.width
-                        )
-                          res.end(file);
-                        else next();
-                        return [2 /*return*/];
-                    }
+                    res.end(file);
+                    return [2 /*return*/];
                   });
                 });
               })

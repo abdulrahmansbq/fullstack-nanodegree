@@ -156,7 +156,7 @@ describe("Test imageProcessor utility", function () {
                     width: 250,
                     height: 250,
                   })
-                ).toBeResolvedTo("assets/thumb/first_image_thumb.jpg"),
+                ).toBeResolvedTo("assets/thumb/first_image_250_250.jpg"),
               ];
             case 1:
               _a.sent();

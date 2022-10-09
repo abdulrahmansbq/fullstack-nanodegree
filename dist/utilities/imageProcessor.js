@@ -145,7 +145,10 @@ var imageResizer = function (data) {
     return __generator(this, function (_a) {
       switch (_a.label) {
         case 0:
-          newPath = "assets/thumb/".concat(data.filename, "_thumb.jpg");
+          newPath = "assets/thumb/"
+            .concat(data.filename, "_")
+            .concat(data.width, "_")
+            .concat(data.height, ".jpg");
           return [
             4 /*yield*/,
             (0, sharp_1.default)("assets/full/".concat(data.filename, ".jpg"))

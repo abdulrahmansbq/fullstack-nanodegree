@@ -18,4 +18,4 @@ npm run build
 
 ## Endpoints:
 
-    api/images
+    http://localhost:3000/api/images?filename=first_image&width=250&height=250
