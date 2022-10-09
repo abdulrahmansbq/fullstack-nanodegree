@@ -1,6 +1,6 @@
 # Fullstack-nanodegree project 1
-
-My first project in the full-stack website development nanodegree.
+ 
+Project #1 in the full-stack website development nanodegree.
 
 
 ## Commands
@@ -14,6 +14,23 @@ npm run start
 
 ```bash
 npm run build
+```
+
+```bash
+npm run prettier
+```
+
+```bash
+npm run ts-prettier
+```
+
+
+```bash
+npm run lint
+```
+
+```bash
+npm run ts-lint
 ```
 
 ## Endpoints:
