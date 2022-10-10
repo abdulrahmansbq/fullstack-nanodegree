@@ -17,6 +17,10 @@ npm run build
 ```
 
 ```bash
+node dist/.
+```
+
+```bash
 npm run prettier
 ```
 
